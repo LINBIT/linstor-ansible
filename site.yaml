@@ -1,0 +1,23 @@
+---
+
+- hosts: linstor-cluster
+  gather_facts: yes
+  become: yes
+
+- hosts: controller
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: linstor/controller, tags: controller }
+
+- hosts: satellite
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: linstor/satellite, tags: satellite }
+
+- hosts: linstor-storage-pool
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: linstor/storage-pool, tags: storage-pool }

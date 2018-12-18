@@ -1,0 +1,4 @@
+---
+dependencies:
+  - { role: commons/os-checker }
+  - { role: commons/pre-install, lb_rpm_pkgs: ["kmod-drbd", "drbd", "drbdtop", "linstor-controller", "linstor-satellite", "linstor-client", "python-linstor", "screen"], lb_deb_pkgs: ["drbd-dkms", "drbd-utils", "drbdtop", "linstor-controller", "linstor-satellite", "linstor-client", "python-linstor", "screen" ] }
