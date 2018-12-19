@@ -22,7 +22,14 @@
 - name: sleep for 30 seconds and continue with play
   wait_for: timeout=30
 
-- name: Initialize the Linstor control node
+- name: Initialize the Linstor control node as pure Controller
   shell: linstor node create {{ ansible_nodename }} {{ ansible_all_ipv4_addresses | ipaddr(drbd_replication_network) | first }} --node-type Controller
+  when: "'satellite' not in group_names"
+  register: linstor_create_result
+  failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )
+
+- name: Initialize the Linstor control node as a Combined type
+  shell: linstor node create {{ ansible_nodename }} {{ ansible_all_ipv4_addresses | ipaddr(drbd_replication_network) | first }} --node-type Combined
+  when: "'satellite' in group_names"
   register: linstor_create_result
   failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )
