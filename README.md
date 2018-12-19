@@ -1,6 +1,6 @@
 # LINSTOR Ansible Playbook
 
-Build a LINSTOR cluster using Ansible with LINSTOR.
+Build a LINSTOR cluster using Ansible.
 
 System requirements:
 
