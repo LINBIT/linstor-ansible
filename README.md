@@ -6,7 +6,7 @@ System requirements:
 
   - Deployment environment must have Ansible `2.4.0+`
   - All target systems must have passwordless SSH access
-  - All hostnames are resolveable
+  - All hostnames are resolvable
   
 
 # Usage
@@ -26,6 +26,8 @@ satellite
 [linstor-storage-pool:children]
 satellite
 ```
+You can list a `controller` in the `satellites` group which will result in the node becoming a `Combined` node in the LINSTOR cluster.
+
 If you're planning on testing with Kubernetes, controller should be a k8s master and satellites k8s kubelets.
 
 Before continuing, edit `group_vars/all.yaml` for special options.
@@ -64,7 +66,7 @@ Then, shell into the controller and start the provisioner:
 # screen -dmS linstor-provisioner bash -c "/usr/sbin/linstor-external-provisioner -provisioner=external/linstor -kubeconfig=/etc/kubernetes/admin.conf"
 ```
 
-Then, define the k8s storage class for the linstor storage pool from the playbook. For example:
+Then, define the k8s storage class for the LINSTOR storage pool from the playbook. For example:
 
 ```sh
 apiVersion: storage.k8s.io/v1beta1
