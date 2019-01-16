@@ -7,7 +7,7 @@
   register: firewalld
   failed_when: ( firewalld.rc not in [ 0, 3 ] )
 
-- name: firewalld ports for Linstor Controller
+- name: firewalld ports for Linstor Satellite
   firewalld:
     port: 3366/tcp
     permanent: true
