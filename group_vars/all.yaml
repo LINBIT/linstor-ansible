@@ -4,7 +4,6 @@ ansible_user: root
 # Linstor variables
 drbd_backing_disk: /dev/vdb
 drbd_replication_network: 172.16.7.0/24
-controller_ip: 172.16.7.190
 
 # LINBIT portal variables
 lb_user: ""
