@@ -4,10 +4,11 @@ Build a LINSTOR cluster using Ansible.
 
 System requirements:
 
-  - Deployment environment must have Ansible `2.4.0+`
-  - All target systems must have passwordless SSH access
-  - All hostnames are resolvable
-  
+  - An account at https://my.linbit.com (contact sales@linbit.com).
+  - Deployment environment must have Ansible `2.7.0+` and `python-netaddr`.
+  - All target systems must have passwordless SSH access.
+  - All hostnames used in inventory file are resolvable (better to use IP addresses).
+  - Target systems are CentOS/RHEL 7.
 
 # Usage
 
