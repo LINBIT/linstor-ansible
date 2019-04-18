@@ -15,6 +15,14 @@
     state: enabled
   when: firewalld.rc == 0
 
+- name: firewalld ports for DRBD
+  firewalld:
+    port: 7000-8000/tcp
+    permanent: true
+    immediate: true
+    state: enabled
+  when: firewalld.rc == 0
+
 - name: Enable and start Linstor Satellite
   systemd:
     name: linstor-satellite.service
