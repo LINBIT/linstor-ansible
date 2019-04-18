@@ -49,60 +49,24 @@ $ ansible-playbook -e lb_user="username" -e lb_pass="password" -e lb_con_id="123
 Shell into the controller node, and see that everything is setup:
 
 ```sh
-# linstor n l; linstor sp l 
+# linstor node list; linstor storage-pool list
 ```
-
-If you're going to use LINSTOR with Kubernetes, you'll need to install the flexvolume plugin on all nodes:
+Create and deploy a resource:
 
 ```sh
-# yum install linstor-external-provisioner linstor-flexvolume-kubernetes
-  -- OR-
-# apt install linstor-external-provisioner linstor-flexvolume-kubernetes
+# linstor resource-definition create test-res-0
+# linstor volume-definition create test-res-0 100MiB
+# linstor resource create \
+  $(linstor sp list | head -n4 | tail -n1 | cut -d"|" -f3 | sed 's/ //g') \
+  test-res-0 --storage-pool thin-lvm
+# linstor resource list
 ```
+You should now have a DRBD device provisioned on a node in your cluster that you can use as you would any other block device.
 
-Then, shell into the controller and start the provisioner:
+# Reference
 
-```sh
-# screen -dmS linstor-provisioner bash -c "/usr/sbin/linstor-external-provisioner -provisioner=external/linstor -kubeconfig=/etc/kubernetes/admin.conf"
-```
-
-Then, define the k8s storage class for the LINSTOR storage pool from the playbook. For example:
-
-```sh
-apiVersion: storage.k8s.io/v1beta1
-kind: StorageClass
-metadata:
-  name: two-replica-autoplace-thin
-provisioner: external/linstor
-parameters:
-  autoplace: "2"
-  storagePool: "thin-lvm"
-```
-
-Finally, apply it to k8s:
-
-```sh
-$ kubectl create -f /root/two-replica-autoplace-sc.yaml
-```
-
-After that you can request persistent volumes for k8s! For example:
-
-```sh
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: pvc-0-two-replica-autoplace-thin
-  annotations:
-    volume.beta.kubernetes.io/storage-class: two-replica-autoplace-thin
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-```
+For more information on LINSTOR - such as instructions for Kubernetes, OpenStack, Docker, or ProxMox integration - refer to [LINBIT's LINSTOR documentation](https://docs.linbit.com/docs/users-guide-9.0/#p-linstor).
 
 # TODO
 
-  - Complete Debian/Ubuntu (just firewall rules?)
-  - Add instructions/options for containerized LINSTOR controller
+  - Complete or remove Debian/Ubuntu support
