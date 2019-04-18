@@ -35,13 +35,13 @@ Before continuing, edit `group_vars/all.yaml` for special options.
 After going through the setup, run the `site.yaml` playbook:
 
 ```sh
-$ ansible-playbook site.yaml
+ansible-playbook site.yaml
 ```
 
 If you don't want to put LINBIT credentials into your `group_vars/all.yaml`, you can run the playbook like this instead:
 
 ```sh
-$ ansible-playbook -e lb_user="username" -e lb_pass="password" -e lb_con_id="1234" -e lb_clu_id="1234" site.yaml
+ansible-playbook -e lb_user="username" -e lb_pass="password" -e lb_con_id="1234" -e lb_clu_id="1234" site.yaml
 ```
 
 # Testing Installation
@@ -49,17 +49,17 @@ $ ansible-playbook -e lb_user="username" -e lb_pass="password" -e lb_con_id="123
 Shell into the controller node, and see that everything is setup:
 
 ```sh
-# linstor node list; linstor storage-pool list
+linstor node list; linstor storage-pool list
 ```
 Create and deploy a resource:
 
 ```sh
-# linstor resource-definition create test-res-0
-# linstor volume-definition create test-res-0 100MiB
-# linstor resource create \
+linstor resource-definition create test-res-0
+linstor volume-definition create test-res-0 100MiB
+linstor resource create \
   $(linstor sp list | head -n4 | tail -n1 | cut -d"|" -f3 | sed 's/ //g') \
   test-res-0 --storage-pool thin-lvm
-# linstor resource list
+linstor resource list
 ```
 You should now have a DRBD device provisioned on a node in your cluster that you can use as you would any other block device.
 
