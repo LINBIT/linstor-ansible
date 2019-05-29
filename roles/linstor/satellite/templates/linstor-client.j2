@@ -1,2 +1,2 @@
 [global]
-controllers={% for node in groups['controller'] %}{{ hostvars[node]['ansible_all_ipv4_addresses']| ipaddr(drbd_replication_network) | first }}:3376{% if not loop.last %},{% endif %}{% endfor %}
+controllers={% for node in groups['controller'] %}{{ hostvars[node]['ansible_all_ipv4_addresses']| ipaddr(drbd_replication_network) | first }}{% if not loop.last %},{% endif %}{% endfor %}
