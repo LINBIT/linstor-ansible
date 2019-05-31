@@ -70,4 +70,4 @@ For more information on LINSTOR - such as instructions for Kubernetes, OpenStack
 
 # TODO
 
-  - Complete or remove Debian/Ubuntu support
+  - pre-flight checks: don't start play until we know everything looks good 

@@ -9,16 +9,9 @@
 - name: Register nodes using linbit-manage-node.py
   shell: bash -c "LB_USERNAME={{ lb_user }} LB_PASSWORD={{ lb_pass  }} LB_CONTRACT_ID={{ lb_con_id  }} LB_CLUSTER_ID={{ lb_clu_id }} python /root/linbit-manage-node.py"
 
-- name: Install LINBIT packages (RHEL/CentOS)
+- name: Install LINBIT packages
   when: ansible_os_family == "RedHat"
   yum:
     name: "{{ item }}"
     update_cache: yes
   with_items: "{{ lb_rpm_pkgs }}"
-
-- name: Install LINBIT packages (Debian/Ubuntu)
-  when: ansible_os_family == "Debian"
-  apt:
-    name: "{{ item }}"
-    update_cache: yes
-  with_items: "{{ lb_deb_pkgs }}"
