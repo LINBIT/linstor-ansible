@@ -4,9 +4,17 @@
   register: firewalld
   failed_when: ( firewalld.rc not in [ 0, 3 ] )
 
-- name: firewalld ports for Linstor Controller
+- name: firewalld ports for Linstor Controller/Satellite connections
   firewalld:
     port: 3376/tcp
+    permanent: true
+    immediate: true
+    state: enabled
+  when: firewalld.rc == 0
+
+- name: firewalld ports for Linstor Controller REST client connections
+  firewalld:
+    port: 3370/tcp
     permanent: true
     immediate: true
     state: enabled
