@@ -30,17 +30,6 @@
     state: restarted
     enabled: yes
 
-- name: Create drbdpool volume group for Linstor
-  lvg:
-    vg: drbdpool
-    pvs: "{{ drbd_backing_disk }}"
-
-- name: Create thin LVM on drbdpool
-  lvol:
-    vg: drbdpool
-    thinpool: thinpool
-    size: 50%VG
-
 - name: sleep for 30 seconds and continue with play
   wait_for: timeout=30
 

@@ -1,3 +1,15 @@
+---
+- name: Create drbdpool volume group for Linstor
+  lvg:
+    vg: drbdpool
+    pvs: "{{ drbd_backing_disk }}"
+
+- name: Create thin LVM on drbdpool
+  lvol:
+    vg: drbdpool
+    thinpool: thinpool
+    size: 50%VG
+
 - name: Create the storage pool definition for thin-lvm
   shell: linstor storage-pool-definition create thin-lvm
   run_once: true
