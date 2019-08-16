@@ -1,5 +1,16 @@
 ---
-- name: Create drbdpool volume group for Linstor
+- name: Create thin file backed storage pool directory
+  file:
+    path: /var/lib/linstor/thin-file-storage-pool
+    state: directory
+    mode: '0755'
+
+- name: Create the storage pool for thin-file
+  shell: linstor storage-pool create filethin {{ ansible_nodename }} thin-file /var/lib/linstor/thin-file-storage-pool
+  register: storage_pool_create_result
+  failed_when: ( storage_pool_create_result.rc not in [ 0, 10 ] )
+
+- name: Create drbdpool volume group for LINSTOR
   lvg:
     vg: drbdpool
     pvs: "{{ drbd_backing_disk }}"
