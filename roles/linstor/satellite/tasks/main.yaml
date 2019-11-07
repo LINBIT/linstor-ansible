@@ -1,4 +1,10 @@
 ---
+- name: gather facts from controller (needed when playbook --limit excludes controller)
+  setup:
+  delegate_to: "{{item}}"
+  delegate_facts: True
+  loop: "{{groups['controller']}}"
+
 - name: Setup linstor-client.conf
   template: src=linstor-client.j2 dest=/etc/linstor/linstor-client.conf
 
