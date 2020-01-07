@@ -2,7 +2,7 @@
 - name: check if firewalld is running
   shell: systemctl status firewalld
   register: firewalld
-  failed_when: ( firewalld.rc not in [ 0, 3 ] )
+  failed_when: ( firewalld.rc not in [ 0, 3, 4 ] )
 
 - name: firewalld ports for Linstor Controller/Satellite connections
   firewalld:
