@@ -1,12 +1,12 @@
 ---
 - name: Create thin file backed storage pool directory
   file:
-    path: /var/lib/linstor/thin-file-storage-pool
+    path: /var/lib/linstor/file-thin-storage-pool
     state: directory
     mode: '0755'
 
-- name: Create the storage pool for thin-file
-  shell: linstor storage-pool create filethin {{ ansible_nodename }} thin-file /var/lib/linstor/thin-file-storage-pool
+- name: Create the storage pool for file-thin
+  shell: linstor storage-pool create filethin {{ ansible_nodename }} file-thin /var/lib/linstor/file-thin-storage-pool
   register: storage_pool_create_result
   failed_when: ( storage_pool_create_result.rc not in [ 0, 10 ] )
 
@@ -21,7 +21,7 @@
     thinpool: thinpool
     size: 50%VG
 
-- name: Create the storage pool for thin-lvm
-  shell: linstor storage-pool create lvmthin {{ ansible_nodename }} thin-lvm drbdpool/thinpool
+- name: Create the storage pool for lvm-thin
+  shell: linstor storage-pool create lvmthin {{ ansible_nodename }} lvm-thin drbdpool/thinpool
   register: storage_pool_create_result
   failed_when: ( storage_pool_create_result.rc not in [ 0, 10 ] )

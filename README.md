@@ -59,7 +59,7 @@ linstor resource-definition create test-res-0
 linstor volume-definition create test-res-0 100MiB
 linstor resource create \
   $(linstor sp list | head -n4 | tail -n1 | cut -d"|" -f3 | sed 's/ //g') \
-  test-res-0 --storage-pool thin-lvm
+  test-res-0 --storage-pool lvm-thin
 linstor resource list
 ```
 You should now have a DRBD device provisioned on a node in your cluster that you can use as you would any other block device.
