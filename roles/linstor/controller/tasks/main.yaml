@@ -1,8 +1,9 @@
 ---
-- name: check if firewalld is running
+- name: check if firewalld is running (RHEL)
   shell: systemctl status firewalld
   register: firewalld
   failed_when: ( firewalld.rc not in [ 0, 3, 4 ] )
+  when: ansible_os_family == 'RedHat'
 
 - name: firewalld ports for Linstor Controller/Satellite connections
   firewalld:
@@ -10,7 +11,7 @@
     permanent: true
     immediate: true
     state: enabled
-  when: firewalld.rc == 0
+  when: firewalld.rc is defined and firewalld.rc == 0
 
 - name: firewalld ports for Linstor Controller REST client connections
   firewalld:
@@ -18,7 +19,27 @@
     permanent: true
     immediate: true
     state: enabled
-  when: firewalld.rc == 0
+  when: firewalld.rc is defined and firewalld.rc == 0
+
+- name: check if UFW is running (Ubuntu)
+  shell: ufw status
+  changed_when: false
+  register: ufw
+  when: ansible_os_family == 'Debian'
+
+- name: ufw ports for LINSTOR Controller/Satellite connections
+  ufw:
+    rule: allow
+    proto: tcp
+    port: "3376"
+  when: ufw.rc is defined and 'inactive' not in ufw.stdout
+
+- name: ufw ports for LINSTOR Controller REST client connections
+  ufw:
+    rule: allow
+    proto: tcp
+    port: "3370"
+  when: ufw.rc is defined and 'inactive' not in ufw.stdout
 
 - name: Enable and start Linstor Controller
   systemd:
