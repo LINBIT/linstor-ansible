@@ -7,12 +7,13 @@ System requirements:
   - An account at https://my.linbit.com (contact sales@linbit.com).
   - Deployment environment must have Ansible `2.7.0+` and `python-netaddr`.
   - All target systems must have passwordless SSH access.
-  - All hostnames used in inventory file are resolvable (better to use IP addresses).
-  - Target systems are CentOS/RHEL 7.
+  - All hostnames used in inventory file are resolvable (or use IP addresses).
+  - Target systems are RHEL 7/8/9 (or compatible variants).
 
 # Usage
 
-Add the system information gathered above into a file called `hosts.ini`. For example:
+Add the system information gathered above into a file called `hosts.ini`.
+For example:
 ```
 [controller]
 192.168.35.12
@@ -27,19 +28,19 @@ satellite
 [linstor-storage-pool:children]
 satellite
 ```
-You can list a `controller` in the `satellites` group which will result in the node becoming a `Combined` node in the LINSTOR cluster.
-
-If you're planning on testing with Kubernetes, controller should be a k8s master and satellites k8s kubelets.
+You can list a `controller` in the `satellites` group which will result in the
+node becoming a `Combined` node in the LINSTOR cluster.
 
 Before continuing, edit `group_vars/all.yaml` for special options.
 
-After going through the setup, run the `site.yaml` playbook:
+When ready, run the `site.yaml` playbook:
 
 ```sh
 ansible-playbook site.yaml
 ```
 
-If you don't want to put LINBIT credentials into your `group_vars/all.yaml`, you can run the playbook like this instead:
+If you don't want to put LINBIT credentials into your `group_vars/all.yaml`, you
+can run the playbook like this instead:
 
 ```sh
 ansible-playbook -e lb_user="username" -e lb_pass="password" -e lb_con_id="1234" -e lb_clu_id="1234" site.yaml
@@ -62,12 +63,12 @@ linstor resource create \
   test-res-0 --storage-pool lvm-thin
 linstor resource list
 ```
-You should now have a DRBD device provisioned on a node in your cluster that you can use as you would any other block device.
+You should now have a DRBD device provisioned on a node in your cluster that you
+can use as you would any other block device.
 
 # Reference
 
-For more information on LINSTOR - such as instructions for Kubernetes, OpenStack, Docker, or ProxMox integration - refer to [LINBIT's LINSTOR documentation](https://docs.linbit.com/docs/users-guide-9.0/#p-linstor).
+For more information on LINSTOR - such as instructions for Kubernetes,
+OpenStack, Docker, or other integration - refer to
+[LINBIT's LINSTOR documentation](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/).
 
-# TODO
-
-  - pre-flight checks: don't start play until we know everything looks good 
