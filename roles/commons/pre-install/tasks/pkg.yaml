@@ -7,7 +7,7 @@
     force: "yes"
 
 - name: Register nodes using linbit-manage-node.py
-  shell: bash -c "LB_USERNAME={{ lb_user }} LB_PASSWORD={{ lb_pass  }} LB_CONTRACT_ID={{ lb_con_id  }} LB_CLUSTER_ID={{ lb_clu_id }} python /root/linbit-manage-node.py"
+  shell: bash -c "LB_USERNAME={{ lb_user }} LB_PASSWORD={{ lb_pass  }} LB_CONTRACT_ID={{ lb_con_id  }} LB_CLUSTER_ID={{ lb_clu_id }} {{ ansible_python.executable }} /root/linbit-manage-node.py"
 
 - name: Install LINBIT packages
   when: ansible_os_family == "RedHat"
