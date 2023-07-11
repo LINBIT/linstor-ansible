@@ -8,7 +8,7 @@ System requirements:
   - Deployment environment must have Ansible `2.7.0+` and `python-netaddr`.
   - All target systems must have passwordless SSH access.
   - All hostnames used in inventory file are resolvable (or use IP addresses).
-  - Target systems are RHEL 7/8/9 (or compatible variants).
+  - Target systems are RHEL 7/8/9  or Ubuntu 22.04 (or compatible variants).
 
 # Usage
 
