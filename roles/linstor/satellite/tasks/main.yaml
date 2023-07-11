@@ -5,7 +5,7 @@
   delegate_facts: True
   loop: "{{groups['controller']}}"
 
-- name: Setup linstor-client.conf
+- name: setup linstor-client.conf
   template: src=linstor-client.j2 dest=/etc/linstor/linstor-client.conf
 
 - name: check if firewalld is running (RHEL)
@@ -14,7 +14,7 @@
   failed_when: ( firewalld.rc not in [ 0, 3, 4 ] )
   when: ansible_os_family == 'RedHat'
 
-- name: firewalld ports for Linstor Satellite
+- name: firewalld ports for LINSTOR Satellite
   firewalld:
     port: 3366/tcp
     permanent: true
@@ -50,7 +50,7 @@
     port: "3366"
   when: ufw.rc is defined and 'inactive' not in ufw.stdout
 
-- name: Enable and start Linstor Satellite
+- name: enable and start LINSTOR Satellite
   systemd:
     name: linstor-satellite.service
     daemon_reload: yes
@@ -60,7 +60,7 @@
 - name: sleep for 30 seconds and continue with play
   wait_for: timeout=30
 
-- name: Join Linstor cluster as satellite node
+- name: join LINSTOR cluster as satellite node
   shell: linstor node create {{ ansible_nodename }} {{ ansible_all_ipv4_addresses | ipaddr(drbd_replication_network) | first }} --node-type Satellite
   register: linstor_create_result
   failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )

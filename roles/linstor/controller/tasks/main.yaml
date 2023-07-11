@@ -5,7 +5,7 @@
   failed_when: ( firewalld.rc not in [ 0, 3, 4 ] )
   when: ansible_os_family == 'RedHat'
 
-- name: firewalld ports for Linstor Controller/Satellite connections
+- name: firewalld ports for LINSTOR Controller/Satellite connections
   firewalld:
     port: 3376/tcp
     permanent: true
@@ -13,7 +13,7 @@
     state: enabled
   when: firewalld.rc is defined and firewalld.rc == 0
 
-- name: firewalld ports for Linstor Controller REST client connections
+- name: firewalld ports for LINSTOR Controller REST client connections
   firewalld:
     port: 3370/tcp
     permanent: true
@@ -41,7 +41,7 @@
     port: "3370"
   when: ufw.rc is defined and 'inactive' not in ufw.stdout
 
-- name: Enable and start Linstor Controller
+- name: enable and start LINSTOR Controller
   systemd:
     name: linstor-controller.service
     daemon_reload: yes
@@ -51,13 +51,13 @@
 - name: sleep for 30 seconds and continue with play
   wait_for: timeout=30
 
-- name: Initialize the Linstor control node as pure Controller
+- name: initialize the LINSTOR control node as pure Controller
   shell: linstor node create {{ ansible_nodename }} {{ ansible_all_ipv4_addresses | ipaddr(drbd_replication_network) | first }} --node-type Controller
   when: "'satellite' not in group_names"
   register: linstor_create_result
   failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )
 
-- name: Initialize the Linstor control node as a Combined type
+- name: initialize the LINSTOR control node as a Combined type
   shell: linstor node create {{ ansible_nodename }} {{ ansible_all_ipv4_addresses | ipaddr(drbd_replication_network) | first }} --node-type Combined
   when: "'satellite' in group_names"
   register: linstor_create_result

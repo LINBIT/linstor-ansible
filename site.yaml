@@ -1,5 +1,4 @@
 ---
-
 - hosts: linstor-cluster
   gather_facts: yes
   become_user: root

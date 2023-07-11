@@ -1,8 +1,10 @@
-# Ansible
+---
+# Ansible variables
 ansible_user: root
+ansible_ssh_private_key_file: ~/.ssh/ansible_key
 
-# Linstor variables
-drbd_backing_disk: /dev/vdb
+# LINSTOR variables
+drbd_backing_disk: /dev/sdb
 drbd_replication_network: 172.16.7.0/24
 
 # LINBIT portal variables
