@@ -21,11 +21,11 @@ For example:
 [satellite]
 192.168.35.[10:11]
 
-[linstor-cluster:children]
+[linstor_cluster:children]
 controller
 satellite
 
-[linstor-storage-pool:children]
+[linstor_storage_pool:children]
 satellite
 ```
 You can list a `controller` in the `satellites` group which will result in the

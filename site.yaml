@@ -1,5 +1,5 @@
 ---
-- hosts: linstor-cluster
+- hosts: linstor_cluster
   gather_facts: yes
   become_user: root
   become: yes
@@ -18,7 +18,7 @@
   roles:
     - { role: linstor/satellite, tags: satellite }
 
-- hosts: linstor-storage-pool
+- hosts: linstor_storage_pool
   gather_facts: yes
   become_user: root
   become: yes
