@@ -1,6 +1,9 @@
 # LINSTOR Ansible Playbook
 
-Build a LINSTOR cluster using Ansible.
+Build a LINSTOR® cluster using Ansible. If you're unfamiliar with LINSTOR,
+please refer to the 
+[Introduction to LINSTOR section](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#p-linstor-introduction)
+of the LINSTOR user's guide on https://linbit.com to learn more.
 
 System requirements:
 
@@ -12,7 +15,7 @@ System requirements:
 
 # Usage
 
-Add the system information gathered above into a file called `hosts.ini`.
+Add the target system information into the inventory file named `hosts.ini`.
 For example:
 ```
 [controller]
@@ -25,13 +28,41 @@ For example:
 controller
 satellite
 
-[linstor_storage_pool:children]
-satellite
+[linstor_storage_pool]
+192.168.35.[10:11]
 ```
-You can list a `controller` in the `satellites` group which will result in the
-node becoming a `Combined` node in the LINSTOR cluster.
 
-Before continuing, edit `group_vars/all.yaml` for special options.
+You can add a `controller` node to the `satellites` node group which will
+result in the node becoming a `Combined` node in the LINSTOR cluster.
+Add nodes to the `linstor_storage_pool` node group for the listed nodes
+to contribute storage to the LINSTOR storage pool created by the playbook.
+
+Also, before continuing, edit `group_vars/all.yaml` to configure the necessary
+variables for the playbook. For example:
+```
+---
+# Ansible variables
+ansible_user: vagrant
+ansible_ssh_private_key_file: ~/.vagrant.d/insecure_private_key
+become: yes
+
+# LINSTOR variables
+drbd_backing_disk: /dev/sdb
+drbd_replication_network: 192.168.222.0/24
+
+# LINBIT portal variables
+lb_user: "lbportaluser"
+lb_pass: "lbportalpass"
+lb_con_id: "1234"
+lb_clu_id: "4321"
+```
+
+The `drbd_backing_disk` should be set to the unused block device that the
+LINSTOR satellite nodes will use if the nodes are also a part of the
+`storage-pool` node group. Also, the `drbd_replication_network` is the network
+interface that be used by LINSTOR and DRBD. It is strongly recommended that the
+`drbd_replication_network` be separate from the management network in production
+systems, but it's not a hard requirement.
 
 When ready, run the `site.yaml` playbook:
 
