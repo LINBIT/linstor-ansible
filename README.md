@@ -10,7 +10,7 @@ System requirements:
   - An account at https://my.linbit.com (contact sales@linbit.com).
   - Deployment environment must have Ansible `2.7.0+` and `python-netaddr`.
   - All target systems must have passwordless SSH access.
-  - All hostnames used in inventory file are resolvable (or use IP addresses).
+  - All hostnames used in the inventory file are resolvable (or use IP addresses).
   - Target systems are RHEL 7/8/9  or Ubuntu 22.04 (or compatible variants).
 
 # Usage
@@ -32,10 +32,9 @@ satellite
 192.168.35.[10:11]
 ```
 
-You can add a `controller` node to the `satellites` node group which will
-result in the node becoming a `Combined` node in the LINSTOR cluster.
-Add nodes to the `linstor_storage_pool` node group for the listed nodes
-to contribute storage to the LINSTOR storage pool created by the playbook.
+You can add a `controller` node to the `satellite` node group which will
+result in the node becoming a `Combined` node in the LINSTOR cluster.  A `Combined` node will function both as a `controller` and as a `satellite` node.
+Add nodes to the `linstor_storage_pool` node group to contribute storage to the LINSTOR storage pool created by the playbook.
 
 Also, before continuing, edit `group_vars/all.yaml` to configure the necessary
 variables for the playbook. For example:
@@ -57,12 +56,12 @@ lb_con_id: "1234"
 lb_clu_id: "4321"
 ```
 
-The `drbd_backing_disk` should be set to the unused block device that the
+The `drbd_backing_disk` variable should be set to an unused block device that the
 LINSTOR satellite nodes will use if the nodes are also a part of the
-`storage-pool` node group. Also, the `drbd_replication_network` is the network
-interface that be used by LINSTOR and DRBD. It is strongly recommended that the
+`storage-pool` node group.  If you do not have an unused block device to specify, a file-thin storage-pool will be used alternatively. The `drbd_replication_network` is the network
+interface that will be used by LINSTOR and DRBD. It is strongly recommended that the
 `drbd_replication_network` be separate from the management network in production
-systems, but it's not a hard requirement.
+systems to limit network traffic congestion, but it's not a hard requirement.
 
 When ready, run the `site.yaml` playbook:
 
@@ -70,16 +69,17 @@ When ready, run the `site.yaml` playbook:
 ansible-playbook site.yaml
 ```
 
-If you don't want to put LINBIT credentials into your `group_vars/all.yaml`, you
+If you don't want to put your LINBIT credentials into the `group_vars/all.yaml`, you
 can run the playbook like this instead:
 
 ```sh
 ansible-playbook -e lb_user="username" -e lb_pass="password" -e lb_con_id="1234" -e lb_clu_id="1234" site.yaml
 ```
 
+Congratulations! You should now have successfully created a LINSTOR cluster using Ansible.
 # Testing Installation
 
-Shell into the controller node, and see that everything is setup:
+Shell into the controller node, and check that everything is setup:
 
 ```sh
 linstor node list; linstor storage-pool list
