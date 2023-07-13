@@ -1,7 +1,7 @@
 # LINSTOR Ansible Playbook
 
 Build a LINSTOR® cluster using Ansible. If you're unfamiliar with LINSTOR,
-please refer to the 
+please refer to the
 [Introduction to LINSTOR section](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#p-linstor-introduction)
 of the LINSTOR user's guide on https://linbit.com to learn more.
 
@@ -33,8 +33,10 @@ satellite
 ```
 
 You can add a `controller` node to the `satellite` node group which will
-result in the node becoming a `Combined` node in the LINSTOR cluster.  A `Combined` node will function both as a `controller` and as a `satellite` node.
-Add nodes to the `linstor_storage_pool` node group to contribute storage to the LINSTOR storage pool created by the playbook.
+result in the node becoming a `Combined` node in the LINSTOR cluster. A
+`Combined` node will function both as a `controller` and as a `satellite` node.
+Add nodes to the `linstor_storage_pool` node group to contribute block storage
+to the LINSTOR storage pool created by the playbook.
 
 Also, before continuing, edit `group_vars/all.yaml` to configure the necessary
 variables for the playbook. For example:
@@ -58,10 +60,12 @@ lb_clu_id: "4321"
 
 The `drbd_backing_disk` variable should be set to an unused block device that the
 LINSTOR satellite nodes will use if the nodes are also a part of the
-`storage-pool` node group.  If you do not have an unused block device to specify, a file-thin storage-pool will be used alternatively. The `drbd_replication_network` is the network
-interface that will be used by LINSTOR and DRBD. It is strongly recommended that the
-`drbd_replication_network` be separate from the management network in production
-systems to limit network traffic congestion, but it's not a hard requirement.
+`storage-pool` node group. If you do not have an unused block device, do not add
+the node to the `linstor_storage_pool` node group, and only a `file-thin`
+storage-pool will be configured instead. The `drbd_replication_network` is the network,
+in CIDR notation, that will be used by LINSTOR and DRBD. It is strongly recommended
+that the `drbd_replication_network` be separate from the management network in
+production systems to limit network traffic congestion, but it's not a hard requirement.
 
 When ready, run the `site.yaml` playbook:
 
